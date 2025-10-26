@@ -1,0 +1,1118 @@
+ <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Pre-Cálculo 🎀 Hello Kitty Edition</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://th.bing.com/th/id/R.45ba30e84241a29f4e8efceeee036fb1?rik=UtCzNsO8azHckA&pid=ImgRaw&r=0');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center center;
+            background-repeat: no-repeat;
+            color: #444;
+            line-height: 1.6;
+            overflow: hidden; 
+        }
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(255, 192, 203, 0.5);
+            visibility: hidden; 
+        }
+        h1 {
+            color: #ff69b4;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 2.8em;
+            border-bottom: 3px dashed #ffb6c1;
+            padding-bottom: 10px;
+            font-weight: 800;
+        }
+        h1::before {
+            content: "🎀 ";
+        }
+        h2 {
+            color: #ff1493;
+            font-size: 1.8em;
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-left: 5px solid #ffb6c1;
+            padding-left: 10px;
+        }
+        h3 {
+            color: #dc143c;
+            font-size: 1.3em;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-btn {
+            background-color: #ffb6c1;
+            color: #dc143c;
+            padding: 12px 25px;
+            font-size: 1.2em;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            box-shadow: 0 4px #ff69b4;
+            transition: all 0.2s;
+        }
+        .dropdown-btn:hover {
+            background-color: #ffc0cb;
+            box-shadow: 0 2px #ff69b4;
+            transform: translateY(2px);
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fff0f5;
+            min-width: 280px;
+            box-shadow: 0px 8px 16px 0px rgba(255, 192, 203, 0.5);
+            z-index: 1;
+            border-radius: 10px;
+            margin-top: 5px;
+            border: 2px solid #ffb6c1;
+        }
+        .dropdown-content button {
+            color: #444;
+            padding: 12px 16px;
+            display: block;
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-size: 1.1em;
+            transition: background-color 0.2s, color 0.2s;
+            border-radius: 0; 
+        }
+        .dropdown-content button:hover {
+            background-color: #ffc0cb;
+            color: #dc143c;
+        }
+        .dropdown-content button.active {
+            background-color: #ff69b4;
+            color: white;
+            font-weight: bold;
+        }
+        .show {
+            display: block;
+        }
+        .nav-center {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .module-section {
+            border: 3px dashed #ffb6c1;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+            background-color: #fff0f5;
+        }
+        .hidden { 
+            display: none;
+        }
+        .input-group {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+        .input-pair {
+            flex: 1;
+            min-width: 150px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 700;
+            color: #ff1493;
+        }
+        input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ffb6c1;
+            border-radius: 8px;
+            font-size: 1em;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+            background-color: #ffffff;
+        }
+        input[type="number"]:focus, select:focus {
+            border-color: #ff69b4;
+            outline: none;
+        }
+        button:not(.dropdown button, .dropdown-btn) {
+            background-color: #dc143c;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 3px #a00028;
+            transform: translateY(0);
+        }
+        button:not(.dropdown button, .dropdown-btn):hover {
+            background-color: #ff1493;
+            box-shadow: 0 1px #a00028;
+            transform: translateY(2px);
+        }
+        .secondary-btn { 
+            background-color: #ffc0cb;
+            color: #dc143c;
+            box-shadow: 0 3px #ff69b4;
+        }
+        .secondary-btn:hover {
+            background-color: #ffb6c1;
+        }
+        .error-message {
+            color: #dc143c; 
+            font-weight: bold;
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+        .point-list {
+            list-style-type: none;
+            padding: 0;
+            max-height: 120px;
+            overflow-y: auto;
+            border: 2px solid #ffb6c1;
+            border-radius: 10px;
+            background-color: #ffffff;
+            margin-top: 10px;
+            padding: 5px;
+        }
+        .point-list li {
+            padding: 5px 8px;
+            border-bottom: 1px dashed #ffc0cb;
+        }
+
+        #results-container {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 3px dashed #ffb6c1;
+        }
+        #results {
+            background-color: #fff8e1;
+            border: 2px solid #ffb6c1;
+            padding: 15px;
+            border-radius: 10px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            min-height: 100px;
+            box-shadow: inset 0 2px 5px rgba(255, 192, 203, 0.2);
+            color: #8b0000;
+        }
+        
+      
+        #welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            
+            background-image: url('https://th.bing.com/th/id/R.45ba30e84241a29f4e8efceeee036fb1?rik=UtCzNsO8azHckA&pid=ImgRaw&r=0');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.3s ease;
+            z-index: 1000; 
+        }
+
+      
+        #welcome-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 228, 230, 0.7);
+            z-index: -1; 
+        }
+
+        .welcome-content {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(255, 192, 203, 0.8);
+            max-width: 400px;
+            transform: scale(0.9);
+            animation: slideUp 0.5s forwards;
+            border: 5px solid #ff69b4; 
+            position: relative; 
+            z-index: 1;
+        }
+
+        .welcome-content h2 {
+            color: #dc143c;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .welcome-content h2::before {
+            content: "💖 ";
+        }
+        .welcome-content h2::after {
+            content: " 💖";
+        }
+
+        .hello-kitty-img {
+            max-width: 150px;
+            height: auto;
+            margin: 20px auto;
+            display: block;
+            border-radius: 50%;
+            border: 3px solid #ffb6c1;
+            box-shadow: 0 5px 15px rgba(255, 192, 203, 0.5);
+        }
+
+        .welcome-content p {
+            font-size: 1.1em;
+            color: #444;
+            margin-bottom: 30px;
+        }
+        
+        .welcome-content button {
+            padding: 12px 30px;
+            font-size: 1.2em;
+            background-color: #ff69b4; 
+            box-shadow: 0 4px #dc143c;
+        }
+        
+        .welcome-content button:hover {
+            background-color: #ff1493;
+            box-shadow: 0 2px #dc143c;
+            transform: translateY(2px);
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="welcome-screen">
+        <div class="welcome-content">
+            <h2>¡Bienvenido/a a nuestra Calculadora!</h2>
+            <img src="https://tse4.mm.bing.net/th/id/OIP.Z7Nc5pd3V-cAGXavclsPugHaJG?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Hello Kitty con moño rojo" class="hello-kitty-img"> 
+            
+            <p>Una herramienta modular de **Pre-Cálculo** llena de dulzura.</p>
+            <p>Usa el menú desplegable para seleccionar tu módulo.</p>
+            <button onclick="closeWelcomeScreen()">Empezar con Hello Kitty</button>
+        </div>
+    </div>
+    
+    <div id="main-content" class="container">
+        
+        <div class="nav-center">
+            <div class="dropdown">
+                <button onclick="toggleDropdown()" class="dropdown-btn" id="mainDropdownButton">
+                    Seleccionar Módulo <span id="currentModuleText"> (Ninguno) </span> ▼
+                </button>
+                <div id="moduleDropdown" class="dropdown-content">
+                    <button id="nav-cartesian" onclick="showModule('cartesianModule', 'Plano Cartesiano')">1. Plano Cartesiano 🗺️</button>
+                    <button id="nav-quadratic" onclick="showModule('quadraticModule', 'Cuadrática y Polinomio')">2. Cuadrática y Polinomio 📉</button>
+                    <button id="nav-inequalities" onclick="showModule('inequalitiesModule', 'Desigualdades')">3. Solucionador de Desigualdades ⚖️</button>
+                </div>
+            </div>
+        </div>
+
+        <h1>Calculadora de Pre-Cálculo</h1>
+        
+        <div id="cartesianModule" class="module-section hidden">
+            <h2>Plano Cartesiano 🗺️</h2>
+            
+            <h3>Añadir Punto</h3>
+            <div class="input-group">
+                <div class="input-pair">
+                    <label for="puntoX">Coordenada X:</label>
+                    <input type="number" id="puntoX" placeholder="Ej: 5.5">
+                    <div id="puntoXError" class="error-message hidden">Ingrese un número válido.</div>
+                </div>
+                <div class="input-pair">
+                    <label for="puntoY">Coordenada Y:</label>
+                    <input type="number" id="puntoY" placeholder="Ej: -3.0">
+                    <div id="puntoYError" class="error-message hidden">Ingrese un número válido.</div>
+                </div>
+                <div><button onclick="addPoint()">Ingresar Punto</button></div>
+                <div><button onclick="clearPoints()" class="secondary-btn">Limpiar Puntos</button></div>
+            </div>
+
+            <h3>Puntos Almacenados:</h3>
+            <ul id="pointList" class="point-list"></ul>
+
+            <div class="input-group">
+                <button onclick="showPoints()">Mostrar Lista</button>
+                <button onclick="showQuadrants()">Analizar Cuadrantes</button>
+            </div>
+            
+            <hr style="margin: 20px 0; border: 0; border-top: 3px dashed #ffc0cb;">
+
+            <h3>Operaciones entre Puntos</h3>
+            <div class="input-group" style="align-items: center;">
+                <div style="flex: 1;">
+                    <label for="distPunto1">Punto 1 (1 - <span id="maxPoints1">0</span>):</label>
+                    <input type="number" id="distPunto1" min="1" max="10" placeholder="Índice">
+                </div>
+                <div style="flex: 1;">
+                    <label for="distPunto2">Punto 2 (1 - <span id="maxPoints2">0</span>):</label>
+                    <input type="number" id="distPunto2" min="1" max="10" placeholder="Índice">
+                </div>
+                <button onclick="calculateDistance()">Distancia</button>
+                <button onclick="calculateMidpoint()">Punto Medio</button>
+            </div>
+        </div>
+        
+        <div id="quadraticModule" class="module-section hidden">
+            <h2>Análisis de Funciones 📉</h2>
+            
+            <h3>Función Cuadrática (a x² + b x + c)</h3>
+            <div class="input-group">
+                <div class="input-pair">
+                    <label for="cuadraticaA">Coeficiente 'a':</label>
+                    <input type="number" id="cuadraticaA" placeholder="Ej: 1" value="0">
+                </div>
+                <div class="input-pair">
+                    <label for="cuadraticaB">Coeficiente 'b':</label>
+                    <input type="number" id="cuadraticaB" placeholder="Ej: -5" value="0">
+                </div>
+                <div class="input-pair">
+                    <label for="cuadraticaC">Constante 'c':</label>
+                    <input type="number" id="cuadraticaC" placeholder="Ej: 6" value="0">
+                </div>
+            </div>
+            <button onclick="saveQuadraticFunction()">Guardar Función</button>
+            <p style="margin-top: 15px;">Función actual: <strong id="currentQuadraticFunction">0 = 0</strong></p>
+            <div class="input-group">
+                <button onclick="analyzeQuadraticRoots()">Calcular Raíces</button>
+                <button onclick="analyzeQuadraticVertex()">Calcular Vértice/Análisis</button>
+            </div>
+
+            <hr style="margin: 20px 0; border: 0; border-top: 3px dashed #ffc0cb;">
+
+            <h3>Análisis de Polinomio (P(x) = ...)</h3>
+            <div class="input-group">
+                <div class="input-pair">
+                    <label for="polinomioCoef">Coeficiente:</label>
+                    <input type="number" id="polinomioCoef" placeholder="Ej: 2.5">
+                    <div id="polinomioCoefError" class="error-message hidden">Ingrese un número válido.</div>
+                </div>
+                <div class="input-pair">
+                    <label for="polinomioExp">Exponente (entero):</label>
+                    <input type="number" id="polinomioExp" placeholder="Ej: 3">
+                    <div id="polinomioExpError" class="error-message hidden">Ingrese un entero válido.</div>
+                </div>
+                <button onclick="addTerm()">Añadir Término</button>
+                <button onclick="clearPolynomial()" class="secondary-btn">Limpiar</button>
+            </div>
+            <p>Términos ingresados:</p>
+            <ul id="polinomioTermsList" class="point-list"></ul>
+            <button onclick="analyzePolynomial()">Analizar Comportamiento Final</button>
+        </div>
+
+        <div id="inequalitiesModule" class="module-section hidden">
+            <h2>Solucionador de Desigualdades ⚖️</h2>
+
+            <h3>Desigualdad Lineal (a x + b [signo] 0)</h3>
+            <div class="input-group">
+                <div style="flex: 1;">
+                    <label for="linealA">Coef. 'a':</label>
+                    <input type="number" id="linealA" placeholder="Ej: 2">
+                </div>
+                <div style="flex: 1;">
+                    <label for="linealB">Coef. 'b':</label>
+                    <input type="number" id="linealB" placeholder="Ej: -4">
+                </div>
+                <div>
+                    <label for="linealSigno">Signo:</label>
+                    <select id="linealSigno" style="width: 100px;">
+                        <option value="<">&lt; &nbsp; (menor)</option>
+                        <option value=">">&gt; &nbsp; (mayor)</option>
+                        <option value="L">&le; &nbsp; (menor igual)</option>
+                        <option value="G">&ge; &nbsp; (mayor igual)</option>
+                    </select>
+                </div>
+                <button onclick="solveLinearInequality()">Resolver Lineal</button>
+            </div>
+
+            <hr style="margin: 20px 0; border: 0; border-top: 3px dashed #ffc0cb;">
+
+            <h3>Desigualdad Cuadrática (a x² + b x + c [signo] 0)</h3>
+            <div class="input-group">
+                <div style="flex: 1;">
+                    <label for="cuadraticaInA">Coef. 'a':</label>
+                    <input type="number" id="cuadraticaInA" placeholder="Ej: 1">
+                </div>
+                <div style="flex: 1;">
+                    <label for="cuadraticaInB">Coef. 'b':</label>
+                    <input type="number" id="cuadraticaInB" placeholder="Ej: -5">
+                </div>
+                <div style="flex: 1;">
+                    <label for="cuadraticaInC">Coef. 'c':</label>
+                    <input type="number" id="cuadraticaInC" placeholder="Ej: 6">
+                </div>
+                <div>
+                    <label for="cuadraticaInSigno">Signo:</label>
+                    <select id="cuadraticaInSigno" style="width: 100px;">
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="L">&le;</option>
+                        <option value="G">&ge;</option>
+                    </select>
+                </div>
+                <button onclick="solveQuadraticInequality()">Resolver Cuadrática</button>
+            </div>
+        </div>
+        
+        <div id="results-container">
+            <h2>Resultados 📝</h2>
+            <button onclick="clearResults()" class="secondary-btn" style="background-color: #ff69b4; color: white;">Limpiar Resultados</button>
+            <pre id="results"></pre> 
+        </div>
+
+    </div>
+
+    <script>
+      
+        let puntos = []; 
+        let polinomioTerms = []; 
+        let currentQuadratic = { a: 0, b: 0, c: 0 }; 
+
+        const mainContentDiv = document.getElementById('main-content');
+        const welcomeScreenDiv = document.getElementById('welcome-screen');
+        const resultsDiv = document.getElementById('results');
+        const pointListDiv = document.getElementById('pointList');
+        const polinomioTermsListDiv = document.getElementById('polinomioTermsList');
+        const currentQuadraticFunctionSpan = document.getElementById('currentQuadraticFunction');
+        const currentModuleTextSpan = document.getElementById('currentModuleText');
+
+        
+        function closeWelcomeScreen() {
+          welcomeScreenDiv.style.opacity = '0';
+            document.body.style.overflow = 'auto'; 
+            setTimeout(() => {
+                welcomeScreenDiv.style.display = 'none';
+              
+                mainContentDiv.style.visibility = 'visible';
+                document.getElementById('results').textContent = 'Seleccione una función del menú desplegable para comenzar. \n';
+            }, 300);
+        }
+
+        
+
+        function toggleDropdown() {
+            document.getElementById("moduleDropdown").classList.toggle("show");
+
+            if (!document.querySelector('.dropdown-content button.active')) {
+                resultsDiv.textContent = 'Seleccione una función del menú desplegable para comenzar. \n';
+            }
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropdown-btn')) {
+                const dropdowns = document.getElementsByClassName("dropdown-content");
+                for (let i = 0; i < dropdowns.length; i++) {
+                    const openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+
+        function showModule(moduleId, moduleName) {
+        
+            document.querySelectorAll('.module-section').forEach(mod => {
+                mod.classList.add('hidden');
+            });
+
+          
+            document.querySelectorAll('.dropdown-content button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById('nav-' + moduleId.replace('Module', '')).classList.add('active');
+
+          
+            document.getElementById(moduleId).classList.remove('hidden');
+
+            currentModuleTextSpan.textContent = ` (${moduleName}) `;
+
+          
+            document.getElementById("moduleDropdown").classList.remove('show');
+            clearResults(); 
+            appendResult(`Sistema listo para trabajar en: ${moduleName}`);
+
+            if (moduleId === 'quadraticModule') {
+                saveQuadraticFunction();
+            }
+        }
+        
+      
+
+        function appendResult(text) {
+            resultsDiv.textContent += text + '\n';
+            resultsDiv.scrollTop = resultsDiv.scrollHeight; 
+        }
+
+        function clearResults() {
+            resultsDiv.textContent = 'Resultados limpiados. Listos para nuevos cálculos.\n';
+        }
+
+        function displayError(message) {
+            appendResult(`\n🚨 ERROR: ${message} 🚨\n`);
+        }
+
+        function getSignHtml(sign) {
+            switch(sign) {
+                case 'L': return '\u2264'; 
+                case 'G': return '\u2265'; 
+                case '<': return '<';
+                case '>': return '>';
+                default: return sign;
+            }
+        }
+
+        function isValidNumber(value) {
+            return !isNaN(parseFloat(value)) && isFinite(value);
+        }
+
+        function updateMaxPointsDisplay() {
+             const max = puntos.length;
+             document.getElementById('maxPoints1').textContent = max;
+             document.getElementById('maxPoints2').textContent = max;
+             document.getElementById('distPunto1').max = max;
+             document.getElementById('distPunto2').max = max;
+        }
+
+        function updatePointList() {
+            pointListDiv.innerHTML = '';
+            if (puntos.length === 0) {
+                pointListDiv.innerHTML = '<li>No hay puntos ingresados.</li>';
+                return;
+            }
+            puntos.forEach((p, i) => {
+                const li = document.createElement('li');
+                li.textContent = `${i + 1}. (${p.x.toFixed(2)}, ${p.y.toFixed(2)})`; 
+                pointListDiv.appendChild(li);
+            });
+            updateMaxPointsDisplay();
+        }
+
+        function addPoint() {
+            const inputX = document.getElementById('puntoX');
+            const inputY = document.getElementById('puntoY');
+            const x = parseFloat(inputX.value);
+            const y = parseFloat(inputY.value);
+            let valid = true;
+
+            if (!isValidNumber(inputX.value)) { document.getElementById('puntoXError').classList.remove('hidden'); valid = false; } else { document.getElementById('puntoXError').classList.add('hidden'); }
+            if (!isValidNumber(inputY.value)) { document.getElementById('puntoYError').classList.remove('hidden'); valid = false; } else { document.getElementById('puntoYError').classList.add('hidden'); }
+
+            if (!valid) return;
+
+            if (puntos.length < 10) {
+                puntos.push({ x: x, y: y });
+                appendResult(`Punto (${x.toFixed(2)}, ${y.toFixed(2)}) agregado correctamente.`);
+                inputX.value = ''; 
+                inputY.value = '';
+                updatePointList();
+            } else {
+                displayError("Límite alcanzado: no se pueden ingresar más de 10 puntos.");
+            }
+        }
+
+        function clearPoints() {
+            puntos = [];
+            appendResult("Lista de puntos limpiada.");
+            updatePointList();
+        }
+
+        function showPoints() {
+            clearResults();
+            if (puntos.length === 0) { appendResult("No hay puntos ingresados para mostrar."); return; }
+            appendResult("--- PUNTOS INGRESADOS ---");
+            puntos.forEach((p, i) => {
+                appendResult(`${i + 1}. P(${p.x.toFixed(2)}, ${p.y.toFixed(2)});`);
+            });
+        }
+
+        function validatePointIndices(idx1, idx2) {
+            if (puntos.length < 2) { displayError("Debe haber al menos dos puntos ingresados para esta operación."); return null; }
+            if (isNaN(idx1) || isNaN(idx2) || idx1 < 1 || idx1 > puntos.length || idx2 < 1 || idx2 > puntos.length) { displayError(`Selección de puntos no válida. Puntos disponibles: 1 a ${puntos.length}.`); return null; }
+            return { p1: puntos[idx1 - 1], p2: puntos[idx2 - 1], idx1: idx1, idx2: idx2 };
+        }
+
+        function calculateDistance() {
+            clearResults();
+            const idx1 = parseInt(document.getElementById('distPunto1').value, 10);
+            const idx2 = parseInt(document.getElementById('distPunto2').value, 10);
+
+            const selected = validatePointIndices(idx1, idx2);
+            if (!selected) return;
+
+            const dx = selected.p2.x - selected.p1.x;
+            const dy = selected.p2.y - selected.p1.y;
+            const d = Math.sqrt(dx * dx + dy * dy);
+
+            appendResult("--- CÁLCULO DE DISTANCIA ---");
+            appendResult(`Fórmula: d = \u221A((x₂ - x₁)\u00b2 + (y₂ - y₁)\u00b2 )`);
+            appendResult(`Cálculo: \u221A((${dx.toFixed(4)})\u00b2 + (${dy.toFixed(4)})\u00b2) = \u221A${(dx*dx + dy*dy).toFixed(4)}`);
+            appendResult(`La distancia entre P${selected.idx1} y P${selected.idx2} es: ${d.toFixed(4)}`);
+        }
+
+        function calculateMidpoint() {
+            clearResults();
+            const idx1 = parseInt(document.getElementById('distPunto1').value, 10); 
+            const idx2 = parseInt(document.getElementById('distPunto2').value, 10); 
+
+            const selected = validatePointIndices(idx1, idx2);
+            if (!selected) return;
+
+            const xm = (selected.p1.x + selected.p2.x) / 2;
+            const ym = (selected.p1.y + selected.p2.y) / 2;
+            
+            appendResult("--- CÁLCULO DE PUNTO MEDIO ---");
+            appendResult(`Fórmula: M = ( (x₁ + x₂)/2 , (y₁ + y₂)/2 )`);
+            appendResult(`El punto medio entre P${selected.idx1} y P${selected.idx2} es: (${xm.toFixed(4)}, ${ym.toFixed(4)})`);
+        }
+
+        function showQuadrants() {
+            clearResults();
+            if (puntos.length === 0) { appendResult("No hay puntos ingresados para analizar cuadrantes."); return; }
+            appendResult("--- ANÁLISIS DE CUADRANTES ---");
+            puntos.forEach((p, i) => {
+                const x = p.x;
+                const y = p.y;
+                let cuadrante = "";
+
+                if (Math.abs(x) < 1e-9 && Math.abs(y) < 1e-9) cuadrante = "el origen (0,0)";
+                else if (Math.abs(x) < 1e-9) cuadrante = "el eje Y";
+                else if (Math.abs(y) < 1e-9) cuadrante = "el eje X";
+                else if (x > 0 && y > 0) cuadrante = "el cuadrante I (+, +)";
+                else if (x < 0 && y > 0) cuadrante = "el cuadrante II (-, +)";
+                else if (x < 0 && y < 0) cuadrante = "el cuadrante III (-, -)";
+                else if (x > 0 && y < 0) cuadrante = "el cuadrante IV (+, -)";
+                
+                appendResult(`Punto ${i + 1} (${x.toFixed(2)}, ${y.toFixed(2)}) está en ${cuadrante}.`);
+            });
+        }
+
+
+        function updatePolynomialTermsList() {
+            polinomioTermsListDiv.innerHTML = '';
+            if (polinomioTerms.length === 0) {
+                polinomioTermsListDiv.innerHTML = '<li>No hay términos en el polinomio.</li>';
+                return;
+            }
+            const sortedTerms = [...polinomioTerms].sort((a, b) => b.exponente - a.exponente);
+
+            sortedTerms.forEach((term) => {
+                const li = document.createElement('li');
+                li.textContent = `${term.coeficiente.toFixed(4)}x^${term.exponente}`;
+                polinomioTermsListDiv.appendChild(li);
+            });
+        }
+
+        function addTerm() {
+            const inputCoef = document.getElementById('polinomioCoef');
+            const inputExp = document.getElementById('polinomioExp');
+            const coef = parseFloat(inputCoef.value);
+            const exp = parseInt(inputExp.value, 10);
+            let valid = true;
+
+            if (!isValidNumber(inputCoef.value)) { document.getElementById('polinomioCoefError').classList.remove('hidden'); valid = false; } else { document.getElementById('polinomioCoefError').classList.add('hidden'); }
+            if (!Number.isInteger(exp) || !isValidNumber(inputExp.value)) { document.getElementById('polinomioExpError').classList.remove('hidden'); valid = false; } else { document.getElementById('polinomioExpError').classList.add('hidden'); }
+
+            if (!valid) return;
+
+            polinomioTerms.push({ coeficiente: coef, exponente: exp });
+            appendResult(`Término ${coef.toFixed(4)}x^${exp} agregado.`);
+            inputCoef.value = ''; 
+            inputExp.value = '';
+            updatePolynomialTermsList();
+        }
+
+        function clearPolynomial() {
+            polinomioTerms = [];
+            appendResult("Polinomio limpiado.");
+            updatePolynomialTermsList();
+        }
+
+function analyzePolynomial() {
+    clearResults();
+    if (polinomioTerms.length === 0) { appendResult("El polinomio está vacío."); return; }
+
+    const consolidatedTerms = polinomioTerms.reduce((acc, term) => {
+        acc[term.exponente] = (acc[term.exponente] || 0) + term.coeficiente;
+        return acc;
+    }, {});
+
+    const sortedExponents = Object.keys(consolidatedTerms).map(Number).sort((a, b) => b - a);
+    const degree = sortedExponents[0];
+    const leadingCoef = consolidatedTerms[degree];
+
+    let polynomialString = "";
+    
+    sortedExponents.forEach((exp, index) => {
+        const coef = consolidatedTerms[exp];
+        if (Math.abs(coef) < 1e-9) return;
+
+        let termStr = "";
+        
+        // Agregar signo
+        if (index > 0) {
+            termStr += coef > 0 ? " + " : " - ";
+        } else {
+            termStr += coef < 0 ? "-" : "";
+        }
+        
+        const absCoef = Math.abs(coef);
+
+        // Construir término
+        if (exp === 0) {
+            termStr += absCoef.toFixed(4);
+        } else if (exp === 1) {
+            termStr += (absCoef === 1 ? "" : absCoef.toFixed(4)) + "x";
+        } else {
+            termStr += (absCoef === 1 ? "" : absCoef.toFixed(4)) + "x^" + exp;
+        }
+        
+        polynomialString += termStr;
+    });
+    
+    if (polynomialString.length === 0) polynomialString = '0';
+    
+    appendResult("--- ANÁLISIS DE COMPORTAMIENTO FINAL ---");
+    appendResult(`Polinomio P(x): ${polynomialString}`);
+    appendResult(`Grado (n): ${degree}`);
+    appendResult(`Coeficiente Principal (aₙ): ${leadingCoef.toFixed(4)}`);
+
+    let behavior = "";
+    let endBehaviorLeft = "";
+    let endBehaviorRight = "";
+
+    const oddDegree = degree % 2 !== 0;
+
+    if (oddDegree) {
+        if (leadingCoef > 0) {
+            behavior = "El polinomio se eleva a la derecha y cae a la izquierda (↗, ↙).";
+            endBehaviorRight = `P(x) → ∞ cuando x → ∞`;
+            endBehaviorLeft = `P(x) → -∞ cuando x → -∞`;
+        } else {
+            behavior = "El polinomio cae a la derecha y se eleva a la izquierda (↘, ↗).";
+            endBehaviorRight = `P(x) → -∞ cuando x → ∞`;
+            endBehaviorLeft = `P(x) → ∞ cuando x → -∞`;
+        }
+    } else {
+        if (leadingCoef > 0) {
+            behavior = "Ambos extremos del polinomio se elevan (↗, ↗).";
+            endBehaviorRight = `P(x) → ∞ cuando x → ∞`;
+            endBehaviorLeft = `P(x) → ∞ cuando x → -∞`;
+        } else {
+            behavior = "Ambos extremos del polinomio caen (↘, ↘).";
+            endBehaviorRight = `P(x) → -∞ cuando x → ∞`;
+            endBehaviorLeft = `P(x) → -∞ cuando x → -∞`;
+        }
+    }
+
+    appendResult(`Conclusión: ${behavior}`);
+    appendResult(endBehaviorLeft);
+    appendResult(endBehaviorRight);
+}
+
+
+        function saveQuadraticFunction() {
+            const a = parseFloat(document.getElementById('cuadraticaA').value);
+            const b = parseFloat(document.getElementById('cuadraticaB').value);
+            const c = parseFloat(document.getElementById('cuadraticaC').value);
+
+            if (!isValidNumber(a) || !isValidNumber(b) || !isValidNumber(c)) {
+                 currentQuadraticFunctionSpan.textContent = 'ERROR: Ingrese números válidos.';
+                 currentQuadratic = { a: 0, b: 0, c: 0 };
+                 return;
+            }
+
+            currentQuadratic = { a, b, c };
+            
+            let funcStr = "f(x) = ";
+            
+            if (a !== 0) {
+                let aStr = Math.abs(a) === 1 ? "" : Math.abs(a).toFixed(4);
+                funcStr += (a < 0 ? "-" : "") + aStr + "x\u00b2";
+            }
+
+            if (b !== 0) {
+                let bStr = Math.abs(b) === 1 && a === 0 ? "x" : (Math.abs(b) === 1 ? "" : Math.abs(b).toFixed(4)) + "x";
+                funcStr += (a !== 0 && b > 0 ? " + " : (a === 0 && b < 0 ? "-" : (b < 0 ? " - " : ""))) + bStr;
+            }
+
+            if (c !== 0) {
+                funcStr += (c > 0 && (a !== 0 || b !== 0) ? " + " : (c < 0 ? " - " : "")) + Math.abs(c).toFixed(4);
+            }
+
+            if (a === 0 && b === 0 && c === 0) {
+                funcStr = "f(x) = 0";
+            } else if (funcStr === "f(x) = ") {
+                 funcStr = "f(x) = " + c.toFixed(4); 
+            }
+            
+            currentQuadraticFunctionSpan.textContent = funcStr;
+            
+            clearResults();
+            appendResult(`Función cuadrática guardada: ${funcStr}`);
+        }
+
+        function analyzeQuadraticRoots() {
+            clearResults();
+            const { a, b, c } = currentQuadratic;
+
+            if (a === 0 && b === 0) {
+                appendResult(`La función es f(x) = ${c.toFixed(4)}. Las raíces se dan solo si ${c.toFixed(4)} = 0.`);
+                appendResult(c === 0 ? "Raíces: Todos los números reales." : "No hay raíces (función constante \u2260 0).");
+                return;
+            }
+
+            if (a === 0) {
+                appendResult("--- SOLUCIÓN LINEAL (ax+b=0) ---");
+                const root = -c / b;
+                appendResult(`Función: ${currentQuadraticFunctionSpan.textContent}`);
+                appendResult(`Raíz (x): ${root.toFixed(4)}`);
+                appendResult(`Corte en Y: f(0) = ${c.toFixed(4)}`);
+                return;
+            }
+
+            appendResult("--- ANÁLISIS DE RAÍCES CUADRÁTICAS ---");
+            appendResult(`Función: ${currentQuadraticFunctionSpan.textContent}`);
+            
+            const discriminant = b * b - 4 * a * c;
+            appendResult(`Discriminante (\u0394): ${discriminant.toFixed(4)}`);
+
+            if (discriminant > 0) {
+                const sqrtD = Math.sqrt(discriminant);
+                const x1 = (-b + sqrtD) / (2 * a);
+                const x2 = (-b - sqrtD) / (2 * a);
+                appendResult("Conclusión: Hay 2 raíces reales y distintas (2 cortes en el eje X).");
+                appendResult(`Raíz 1 (x\u2081): ${x1.toFixed(4)}`);
+                appendResult(`Raíz 2 (x\u2082): ${x2.toFixed(4)}`);
+            } else if (discriminant === 0) {
+                const x = -b / (2 * a);
+                appendResult("Conclusión: Hay 1 raíz real (multiplicidad 2) (1 corte en el eje X).");
+                appendResult(`Raíz única (x): ${x.toFixed(4)}`);
+            } else {
+                const sqrtAbsD = Math.sqrt(-discriminant);
+                const realPart = (-b / (2 * a)).toFixed(4);
+                const imagPart = (sqrtAbsD / (2 * a)).toFixed(4);
+                appendResult("Conclusión: Hay 2 raíces complejas conjugadas (No hay cortes en el eje X).");
+                appendResult(`Raíz 1 (x\u2081): ${realPart} + ${Math.abs(imagPart)}i`);
+                appendResult(`Raíz 2 (x\u2082): ${realPart} - ${Math.abs(imagPart)}i`);
+            }
+            appendResult(`Corte en Y: f(0) = ${c.toFixed(4)}`);
+        }
+
+        function analyzeQuadraticVertex() {
+            clearResults();
+            const { a, b, c } = currentQuadratic;
+            
+            if (a === 0) {
+                appendResult("La función es lineal (o constante), no tiene un vértice como parábola. Analice las raíces o ingrese una función cuadrática válida (a \u2260 0).");
+                return;
+            }
+
+            appendResult("--- ANÁLISIS DE VÉRTICE Y PARÁBOLA ---");
+            appendResult(`Función: ${currentQuadraticFunctionSpan.textContent}`);
+            
+            const vx = -b / (2 * a);
+            const vy = a * vx * vx + b * vx + c; 
+            
+            const direction = a > 0 ? "Abre hacia arriba (U), Vértice es un Mínimo." : "Abre hacia abajo (\u2229), Vértice es un Máximo.";
+            const axis = `Eje de simetría (x): ${vx.toFixed(4)}`;
+            const domain = "Dominio: (-\u221E, \u221E)"; 
+            const range = a > 0 ? `Rango: [\u207B${vy.toFixed(4)}, \u221E)` : `Rango: (-\u221E, ${vy.toFixed(4)}]`;
+            
+            appendResult(`Vértice (h, k): (${vx.toFixed(4)}, ${vy.toFixed(4)})`);
+            appendResult(direction);
+            appendResult(axis);
+            appendResult(domain);
+            appendResult(range);
+        }
+
+        function solveLinearInequality() {
+            clearResults();
+            const a = parseFloat(document.getElementById('linealA').value);
+            const b = parseFloat(document.getElementById('linealB').value);
+            const sign = document.getElementById('linealSigno').value;
+
+            if (!isValidNumber(a) || !isValidNumber(b) || (a === 0 && b === 0)) {
+                displayError("Ingrese coeficientes 'a' y 'b' válidos (a \u2260 0 para una desigualdad lineal significativa).");
+                return;
+            }
+
+            const signHtml = getSignHtml(sign);
+            const ineqStr = `${a.toFixed(4)}x ${b > 0 ? " + " : " - "}${Math.abs(b).toFixed(4)} ${signHtml} 0`;
+            appendResult("--- SOLUCIÓN DE DESIGUALDAD LINEAL ---");
+            appendResult(`Desigualdad: ${ineqStr}`);
+
+            if (a === 0) {
+                const bCompare = b;
+                let conclusion = "";
+                let set = "";
+
+                if (sign === '<' || sign === 'L') { 
+                    conclusion = bCompare <= 0 ? "Verdadera." : "Falsa.";
+                } else { 
+                    conclusion = bCompare >= 0 ? "Verdadera." : "Falsa.";
+                }
+
+                if (conclusion === "Verdadera.") {
+                    set = "Solución: Todos los números reales. (-\u221E, \u221E)";
+                } else {
+                    set = "Solución: No hay solución. \u2205";
+                }
+                appendResult(`Análisis (0 ${signHtml} ${-b.toFixed(4)}): ${conclusion}`);
+                appendResult(set);
+                return;
+            }
+
+            const criticalPoint = -b / a;
+            let solutionSet = "";
+
+            if (a > 0) {
+                if (sign === '>') solutionSet = `( ${criticalPoint.toFixed(4)}, \u221E )`;
+                else if (sign === '<') solutionSet = `( -\u221E, ${criticalPoint.toFixed(4)} )`;
+                else if (sign === 'G') solutionSet = `[ ${criticalPoint.toFixed(4)}, \u221E )`;
+                else if (sign === 'L') solutionSet = `( -\u221E, ${criticalPoint.toFixed(4)} ]`;
+            } else { 
+                if (sign === '>') solutionSet = `( -\u221E, ${criticalPoint.toFixed(4)} )`;
+                else if (sign === '<') solutionSet = `( ${criticalPoint.toFixed(4)}, \u221E )`;
+                else if (sign === 'G') solutionSet = `( -\u221E, ${criticalPoint.toFixed(4)} ]`;
+                else if (sign === 'L') solutionSet = `[ ${criticalPoint.toFixed(4)}, \u221E )`;
+            }
+
+            appendResult(`Punto crítico: x = ${criticalPoint.toFixed(4)}`);
+            appendResult(`Solución en intervalo: ${solutionSet}`);
+        }
+
+        function solveQuadraticInequality() {
+            clearResults();
+            const a = parseFloat(document.getElementById('cuadraticaInA').value);
+            const b = parseFloat(document.getElementById('cuadraticaInB').value);
+            const c = parseFloat(document.getElementById('cuadraticaInC').value);
+            const sign = document.getElementById('cuadraticaInSigno').value;
+            const signHtml = getSignHtml(sign);
+
+            if (!isValidNumber(a) || !isValidNumber(b) || !isValidNumber(c) || a === 0) {
+                displayError("Ingrese coeficientes 'a', 'b' y 'c' válidos (a \u2260 0 para una desigualdad cuadrática).");
+                return;
+            }
+
+            const ineqStr = `${a.toFixed(4)}x\u00b2 ${b >= 0 ? " + " : " - "}${Math.abs(b).toFixed(4)}x ${c >= 0 ? " + " : " - "}${Math.abs(c).toFixed(4)} ${signHtml} 0`;
+            appendResult("--- SOLUCIÓN DE DESIGUALDAD CUADRÁTICA ---");
+            appendResult(`Desigualdad: ${ineqStr}`);
+            
+            const D = b * b - 4 * a * c;
+            appendResult(`Discriminante (\u0394): ${D.toFixed(4)}`);
+
+            let roots = [];
+            let conclusion = "";
+            let interval = "";
+            const openBracket = sign === '<' || sign === '>' ? '(' : '[';
+            const closeBracket = sign === '<' || sign === '>' ? ')' : ']';
+
+            if (D >= 0) {
+                const sqrtD = Math.sqrt(D);
+                const x1 = (-b - sqrtD) / (2 * a); 
+                const x2 = (-b + sqrtD) / (2 * a);
+                roots = [Math.min(x1, x2), Math.max(x1, x2)];
+                
+                if (D > 0) appendResult(`Puntos críticos: x\u2081 = ${roots[0].toFixed(4)}, x\u2082 = ${roots[1].toFixed(4)}`);
+                else appendResult(`Punto crítico único: x = ${roots[0].toFixed(4)}`);
+            } else {
+                appendResult("Puntos críticos: Ninguno (raíces complejas).");
+            }
+            
+            const isGreater = sign === '>' || sign === 'G';
+            const isLess = sign === '<' || sign === 'L';
+
+            if (D < 0) {
+                if ((a > 0 && isGreater) || (a < 0 && isLess)) { 
+                    conclusion = "Verdadera para todos los reales (parábola siempre sobre/bajo el eje X).";
+                    interval = "( -\u221E, \u221E )";
+                } else {
+                    conclusion = "Falsa para todos los reales (parábola nunca satisface la condición).";
+                    interval = "\u2205";
+                }
+            } else if (D === 0) {
+                const x0 = roots[0];
+                if ((a > 0 && isGreater) || (a < 0 && isLess)) {
+                    conclusion = "Verdadera para todos los reales, excepto en el punto crítico.";
+                    interval = `( -\u221E, ${x0.toFixed(4)} ) \u222A ( ${x0.toFixed(4)}, \u221E )`;
+                } else if ((a > 0 && isLess) || (a < 0 && isGreater)) {
+                    conclusion = "Falsa para todos los reales (solo puede ser cero o no).";
+                    interval = "\u2205";
+                } else if (sign === 'G' || sign === 'L') {
+                     conclusion = "Verdadera para todos los reales (se incluye el punto cero).";
+                     interval = "( -\u221E, \u221E )";
+                }
+            } else { 
+                const x1 = roots[0];
+                const x2 = roots[1];
+
+                if (a > 0) { 
+                    if (isGreater) {
+                        interval = `( -\u221E, ${x1.toFixed(4)} )${closeBracket} \u222A ${openBracket}${x2.toFixed(4)}, \u221E )`;
+                        conclusion = "La parábola positiva es mayor fuera de las raíces.";
+                    } else { 
+                        interval = `${openBracket}${x1.toFixed(4)}, ${x2.toFixed(4)}${closeBracket}`;
+                        conclusion = "La parábola positiva es menor entre las raíces.";
+                    }
+                } else { 
+                    if (isGreater) {
+                        interval = `${openBracket}${x1.toFixed(4)}, ${x2.toFixed(4)}${closeBracket}`;
+                        conclusion = "La parábola negativa es mayor entre las raíces.";
+                    } else { 
+                        interval = `( -\u221E, ${x1.toFixed(4)} )${closeBracket} \u222A ${openBracket}${x2.toFixed(4)}, \u221E )`;
+                        conclusion = "La parábola negativa es menor fuera de las raíces.";
+                    }
+                }
+            }
+            
+            appendResult(`Comportamiento: ${conclusion}`);
+            appendResult(`Solución en intervalo: ${interval}`);
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            updatePointList();
+            saveQuadraticFunction(); 
+        });
+
+    </script>
+</body>
+</html>
